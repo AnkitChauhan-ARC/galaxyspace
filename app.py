@@ -4,24 +4,40 @@ from itsdangerous import URLSafeTimedSerializer
 from pymongo import MongoClient
 from bson.objectid import ObjectId
 import os
+from dotenv import load_dotenv
+
+
+load_dotenv() 
 
 app = Flask(__name__)
-app.secret_key = 'your_secret_key'
+# app.secret_key = 'your_secret_key'
+app.secret_key = os.getenv("SECRET_KEY")
 
+# client = MongoClient(
+#     "mongodb://myAdmin:myStrongPassword@127.0.0.1:27017/flask_login?authSource=admin"
+# )
 
-client = MongoClient("mongodb://myAdmin:myStrongPassword@127.0.0.1:27017/")
-
-
-db = client["flask_login"]  
+mongo_uri = os.getenv("MONGO_URI")
+client = MongoClient(mongo_uri)
+db = client["flask_login"]
 users_col = db["users"]
 vocab_col = db["vocabulary"]
 history_col = db["quiz_history"]
 
-app.config['MAIL_SERVER'] = 'smtp.gmail.com'
-app.config['MAIL_PORT'] = 587
-app.config['MAIL_USE_TLS'] = True
-app.config['MAIL_USERNAME'] = 'chauhanankit4591@gmail.com'
-app.config['MAIL_PASSWORD'] = 'evep ygbs ilil zrnw'
+# Mail config
+app.config['MAIL_USERNAME'] = os.getenv('MAIL_USERNAME')
+app.config['MAIL_PASSWORD'] = os.getenv('MAIL_PASSWORD')
+
+# db = client["flask_login"]  
+# users_col = db["users"]
+# vocab_col = db["vocabulary"]
+# history_col = db["quiz_history"]
+
+# app.config['MAIL_SERVER'] = 'smtp.gmail.com'
+# app.config['MAIL_PORT'] = 587
+# app.config['MAIL_USE_TLS'] = True
+# app.config['MAIL_USERNAME'] = 'chauhanankit4591@gmail.com'
+# app.config['MAIL_PASSWORD'] = 'evep ygbs ilil zrnw'
 
 mail = Mail(app)
 s = URLSafeTimedSerializer(app.secret_key)
@@ -31,7 +47,6 @@ def home():
     return render_template('home.html')
 
 
-# ---------------- Registration ----------------
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     if request.method == 'POST':
@@ -60,7 +75,6 @@ def register():
     return render_template('register.html')
 
 
-# ---------------- Login ----------------
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
@@ -79,7 +93,6 @@ def login():
     return render_template('login.html')
 
 
-# ---------------- Dashboard ----------------
 @app.route('/dashboard')
 def dashboard():
     if 'email' in session:
@@ -88,7 +101,6 @@ def dashboard():
         return redirect(url_for('login'))
 
 
-# ---------------- Logout ----------------
 # @app.route('/logout')
 # def logout():
 #     session.pop('username', None)
@@ -114,7 +126,6 @@ def logout():
                     } for item in vocab_data
                 ])
 
-        # 🧩 Optional: Auto-save quiz history stored in session
         if 'quiz_history' in session:
             history_data = session.pop('quiz_history', [])
             if history_data:
@@ -127,10 +138,10 @@ def logout():
                         'percentage': entry['percentage']
                     })
 
-        # Clear login info
+
         session.pop('username', None)
         session.pop('email', None)
-        flash('Progress saved and you have been logged out.', 'info')
+        flash('You have been logged out.', 'info')
     return redirect(url_for('login'))
 
 @app.route('/api/vocab', methods=['GET', 'POST'])
@@ -141,12 +152,10 @@ def handle_vocab():
     user_email = session['email']
 
     if request.method == 'GET':
-        # Get saved vocabulary from DB
         vocab = list(vocab_col.find({'user_email': user_email}, {'_id': 0}))
         return jsonify(vocab)
 
     elif request.method == 'POST':
-        # Save current progress to DB
         data = request.get_json()
         if not data or 'vocabulary' not in data:
             return jsonify({'error': 'Invalid data format'}), 400
@@ -164,6 +173,7 @@ def handle_vocab():
             vocab_col.insert_many(new_vocab)
 
         return jsonify({'message': 'Vocabulary saved successfully'})
+    
 @app.route('/api/history', methods=['GET', 'POST'])
 def handle_history():
     if 'email' not in session:
@@ -172,12 +182,10 @@ def handle_history():
     user_email = session['email']
 
     if request.method == 'GET':
-        # Return previous quiz attempts
         history = list(history_col.find({'user_email': user_email}, {'_id': 0}).sort('_id', -1))
         return jsonify(history)
 
     elif request.method == 'POST':
-        # Save new quiz result
         data = request.get_json()
         if not data or any(k not in data for k in ['date', 'score', 'total', 'percentage']):
             return jsonify({'error': 'Invalid data format'}), 400
@@ -191,8 +199,6 @@ def handle_history():
         })
         return jsonify({'message': 'Quiz history saved successfully'})
 
-
-# ---------------- Password Reset ----------------
 @app.route('/forgot', methods=['GET', 'POST'])
 def forgot():
     if request.method == 'POST':
@@ -240,5 +246,3 @@ def reset_password(token):
 
 if __name__ == '__main__':
     app.run(debug=True)
-
-
