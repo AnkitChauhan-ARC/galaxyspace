@@ -9,7 +9,7 @@ app = Flask(__name__)
 app.secret_key = 'your_secret_key'
 
 
-client = MongoClient("mongodb://localhost:27017/")
+client = MongoClient("mongodb://127.0.0.1:27017/")
 
 
 db = client["flask_login"]  
@@ -240,3 +240,4 @@ def reset_password(token):
 
 if __name__ == '__main__':
     app.run(debug=True)
+
