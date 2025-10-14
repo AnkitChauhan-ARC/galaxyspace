@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Language Buddy Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="static/style.css">
+</head>
+<body>
+
+    <div class="dashboard-container">
+        <div class="sidebar">
+            <h2>Language Buddy</h2>
+            
+            <button class="nav-button active" data-view="vocabulary">Vocabulary</button>
+            <button class="nav-button" data-view="quiz">Quiz</button>
+            <button class="nav-button" data-view="progress">Progress</button>
+
+            <div class="profile-container">
+                <button id="profile-btn">
+                    <span class="profile-icon">👤</span> {{ username }}
+                </button>
+                <div id="profile-dropdown" class="hidden">
+                <span id="profile-email"><p> {{ email }} </p></span>
+                        
+                  <form action="{{ url_for('logout') }}" method="GET">
+                  <button id="logout-btn" type="submit">Logout</button>
+                  </form>
+                </div>
+            </div>
+            </div>
+
+        <div class="main-content">
+
+            <section id="vocabulary-view">
+                <h2 class="section-header">My Vocabulary List</h2>
+                <div class="card">
+                    <h3>Add New Word</h3>
+                    <div id="vocab-input-area">
+                        <input type="text" id="new-word-input" placeholder="Foreign Word (e.g., amigo)">
+                        <input type="text" id="new-translation-input" placeholder="Translation (e.g., friend)">
+                        <button class="btn" id="add-word-btn">Add Word</button>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3>My Words</h3>
+                    <ul class="vocabulary-list" id="vocabulary-list">
+                        </ul>
+                </div>
+            </section>
+
+            <section id="quiz-view" class="hidden">
+                <h2 class="section-header">Daily Quiz</h2>
+                <div class="card">
+                    <p class="question-text" id="quiz-question">Loading question...</p>
+                    <div id="quiz-options">
+                        </div>
+                    <p id="quiz-feedback"></p>
+                    <button class="btn" id="next-question-btn" disabled>Next Question</button>
+                    <button class="btn" id="start-quiz-btn">Start Quiz</button>
+                </div>
+                <div class="card" id="quiz-result-card" class="hidden">
+                    <h3>Quiz Complete!</h3>
+                    <p>Your Score: <span id="final-score">0</span> / <span id="total-questions">0</span></p>
+                    <button class="btn" onclick="startQuiz()">Try Again</button>
+                </div>
+            </section>
+
+            <section id="progress-view" class="hidden">
+                <h2 class="section-header">My Progress</h2>
+                <div class="progress-grid">
+                     <div class="card stat-box">
+                        <p>Total Words Learned</p>
+                        <h3 id="stat-words">0</h3>
+                    </div>
+                    <div class="card stat-box">
+                        <p>Quizzes Completed</p>
+                        <h3 id="stat-quizzes">0</h3>
+                    </div>
+                    <div class="card stat-box">
+                        <p>Average Quiz Score</p>
+                        <h3 id="stat-avg-score">0%</h3>
+                    </div>
+                </div>
+                
+                <!--<div class="card">
+                    <h3>Overall Vocabulary Progress</h3>
+                    <p class="vocab-progress-label">Goal: 100 Words</p>-->
+                    <div class="progress-bar-container">
+                        <div class="progress-bar-fill" id="vocab-progress-bar"></div>
+                    </div>
+               
+                
+
+                <div class="card">
+                    <h3>Quiz Score History</h3>
+                    <ul id="score-history-list">
+                        </ul>
+                </div>
+            </section>
+
+        </div>
+    </div>
+    <script src="static/script.js"></script>
+       {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+        <div class="flash-messages">
+            {% for category, message in messages %}
+                <div class="flash {{ category }}">{{ message }}</div>
+            {% endfor %}
+        </div>
+    {% endif %}
+{% endwith %}
+
+</body>
+</html>

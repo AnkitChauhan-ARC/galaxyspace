@@ -1,0 +1,400 @@
+ /* ==================== */
+        /* === CSS STYLES === */
+        /* ==================== */
+
+        :root {
+            --primary-color: #4CAF50; /* Green */
+            --secondary-color: #2196F3; /* Blue */
+            --background-color: #f4f7f6;
+            --card-background: #ffffff;
+            --text-color: #333;
+            --light-text: #666;
+            --border-radius: 8px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background-color: var(--background-color);
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+
+        /* --- Dashboard Layout --- */
+        .dashboard-container {
+            display: grid;
+            grid-template-columns: 250px 1fr;
+            min-height: 100vh;
+        }
+
+        /* --- Sidebar --- */
+        .sidebar {
+            background-color: #2c3e50; /* Darker background */
+            color: white;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            position: relative; /* Needed for absolute positioning of profile */
+        }
+
+        .sidebar h2 {
+            margin-bottom: 30px;
+            font-size: 1.5rem;
+            text-align: center;
+        }
+
+        .nav-button {
+            background: none;
+            border: none;
+            color: white;
+            padding: 15px 10px;
+            text-align: left;
+            font-size: 1rem;
+            cursor: pointer;
+            border-radius: var(--border-radius);
+            margin-bottom: 10px;
+            transition: background-color 0.3s;
+        }
+
+        .nav-button:hover, .nav-button.active {
+            background-color: var(--primary-color);
+        }
+
+        /* --- Profile Button & Dropdown Styles --- */
+        .profile-container {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80%; /* Takes up most of the sidebar width */
+        }
+
+        #profile-btn {
+            width: 100%;
+            background-color: #34495e; /* Slightly lighter dark color */
+            border: none;
+            color: white;
+            padding: 10px;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background-color 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #profile-btn:hover {
+            background-color: #4CAF50;
+        }
+
+        .profile-icon {
+            margin-right: 8px;
+            /* Simple placeholder icon (you could use an SVG or font icon) */
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+
+        #profile-dropdown {
+            background-color: var(--card-background);
+            color: var(--text-color);
+            border-radius: var(--border-radius);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            position: absolute;
+            bottom: 100%; /* Position above the button */
+            left: 0;
+            width: 100%;
+            margin-bottom: 10px;
+            padding: 10px 0;
+            z-index: 10;
+        }
+
+        #profile-email {
+            padding: 8px 15px;
+            font-size: 0.9rem;
+            color: var(--light-text);
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            display: block;
+        }
+
+        #logout-btn {
+            width: calc(100% - 30px); /* 100% minus padding */
+            margin: 5px 15px 5px 15px;
+            background-color: #e74c3c; /* Red for logout */
+            color: white;
+            border: none;
+            padding: 8px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        #logout-btn:hover {
+            background-color: #c0392b;
+        }
+        /* --- End of Profile Button Styles --- */
+
+        /* --- Main Content --- */
+        .main-content {
+            padding: 30px;
+        }
+
+        .section-header {
+            border-bottom: 2px solid #ddd;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+            font-size: 1.8rem;
+            color: var(--primary-color);
+        }
+
+        .card {
+            background-color: var(--card-background);
+            padding: 20px;
+            border-radius: var(--border-radius);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+            margin-bottom: 20px;
+        }
+
+        /* --- Utility Classes --- */
+        .hidden {
+            display: none !important;
+        }
+
+        .btn {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background-color 0.3s;
+        }
+
+        .btn:hover {
+            background-color: #388E3C;
+        }
+
+        /* (Rest of existing CSS styles for vocab, quiz, progress remain the same) */
+        /* --- Vocabulary Section --- */
+        #vocab-input-area {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        #vocab-input-area input {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            flex-grow: 1;
+        }
+
+        .vocabulary-list {
+            list-style: none;
+            padding: 0;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .vocab-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 15px;
+            border-bottom: 1px dashed #eee;
+        }
+
+        .vocab-item:last-child {
+            border-bottom: none;
+        }
+
+        .vocab-item span {
+            font-weight: 600;
+        }
+
+        .vocab-item .translation {
+            color: var(--light-text);
+            font-style: italic;
+        }
+
+        .delete-btn {
+            background: none;
+            color: #E53935;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        /* --- Quiz Section --- */
+        #quiz-section .question-text {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+
+        #quiz-options {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .quiz-option {
+            background-color: #f0f0f0;
+            padding: 15px;
+            border: 2px solid #ddd;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.2s;
+        }
+
+        .quiz-option:hover {
+            background-color: #e0e0e0;
+            border-color: var(--secondary-color);
+        }
+
+        .quiz-option.correct {
+            background-color: #C8E6C9; /* Light Green */
+            border-color: var(--primary-color);
+        }
+
+        .quiz-option.incorrect {
+            background-color: #FFCDD2; /* Light Red */
+            border-color: #E53935;
+        }
+
+        #quiz-feedback {
+            margin-top: 15px;
+            font-weight: 600;
+            min-height: 20px;
+        }
+
+        /* --- Progress Section --- */
+        .progress-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+
+        .stat-box {
+            text-align: center;
+            padding: 20px;
+            border-radius: var(--border-radius);
+            background-color: #E3F2FD; /* Light Blue */
+        }
+
+        .stat-box h3 {
+            font-size: 2.5rem;
+            color: var(--secondary-color);
+            margin-bottom: 5px;
+        }
+
+        .stat-box p {
+            font-size: 0.9rem;
+            color: var(--light-text);
+        }
+
+        /* .progress-bar-container {
+            height: 25px;
+            background-color: #e0e0e0;
+            border-radius: 5px;
+            margin-top: 15px;
+            overflow: hidden;
+        }
+
+        .progress-bar-fill {
+            height: 100%;
+            width: 0%;
+            background-color: var(--primary-color);
+            transition: width 0.5s ease-in-out;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            padding-right: 5px;
+            color: white;
+            font-weight: 600;
+            font-size: 0.8rem;
+        } */
+
+        /* --- Media Queries for Responsiveness --- */
+        @media (max-width: 768px) {
+            .dashboard-container {
+                grid-template-columns: 1fr;
+            }
+
+            .sidebar {
+                padding: 10px;
+                flex-direction: row;
+                justify-content: space-around;
+                align-items: center; /* Center items vertically */
+            }
+
+            .sidebar h2 {
+                display: none;
+            }
+
+            .nav-button {
+                padding: 10px 5px;
+                text-align: center;
+                flex-grow: 1;
+                margin: 0 5px; /* Adjust margin for row layout */
+            }
+
+            /* Adjust profile container for mobile row layout */
+            .profile-container {
+                position: static;
+                transform: none;
+                width: auto;
+                margin-left: 10px;
+            }
+
+            #profile-btn {
+                width: auto;
+                padding: 10px;
+            }
+            
+            .profile-icon {
+                margin: 0;
+            }
+
+            .main-content {
+                padding: 20px 15px;
+            }
+
+            #vocab-input-area {
+                flex-direction: column;
+            }
+
+            #quiz-options {
+                grid-template-columns: 1fr;
+            }
+
+            /* Fix dropdown positioning in mobile */
+            #profile-dropdown {
+                bottom: auto;
+                top: 100%;
+                margin-top: 5px;
+                right: 0;
+                left: auto;
+                width: 200px;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .alphabet-grid {
+                grid-template-columns: repeat(auto-fill, minmax(60px, 1fr));
+            }
+            
+            #search-input {
+                width: 100%;
+            }
+        }
