@@ -4,40 +4,24 @@ from itsdangerous import URLSafeTimedSerializer
 from pymongo import MongoClient
 from bson.objectid import ObjectId
 import os
-from dotenv import load_dotenv
-
-
-load_dotenv() 
 
 app = Flask(__name__)
-# app.secret_key = 'your_secret_key'
-app.secret_key = os.getenv("SECRET_KEY")
+app.secret_key = 'your_secret_key'
 
-# client = MongoClient(
-#     "mongodb://myAdmin:myStrongPassword@127.0.0.1:27017/flask_login?authSource=admin"
-# )
+client = MongoClient(
+    "mongodb://localhost:27017/"
+)
 
-mongo_uri = os.getenv("MONGO_URI")
-client = MongoClient(mongo_uri)
-db = client["flask_login"]
+db = client["flask_login"]  
 users_col = db["users"]
 vocab_col = db["vocabulary"]
 history_col = db["quiz_history"]
 
-# Mail config
-app.config['MAIL_USERNAME'] = os.getenv('MAIL_USERNAME')
-app.config['MAIL_PASSWORD'] = os.getenv('MAIL_PASSWORD')
-
-# db = client["flask_login"]  
-# users_col = db["users"]
-# vocab_col = db["vocabulary"]
-# history_col = db["quiz_history"]
-
-# app.config['MAIL_SERVER'] = 'smtp.gmail.com'
-# app.config['MAIL_PORT'] = 587
-# app.config['MAIL_USE_TLS'] = True
-# app.config['MAIL_USERNAME'] = 'chauhanankit4591@gmail.com'
-# app.config['MAIL_PASSWORD'] = 'evep ygbs ilil zrnw'
+app.config['MAIL_SERVER'] = 'smtp.gmail.com'
+app.config['MAIL_PORT'] = 587
+app.config['MAIL_USE_TLS'] = True
+app.config['MAIL_USERNAME'] = 'chauhanankit4591@gmail.com'
+app.config['MAIL_PASSWORD'] = 'evep ygbs ilil zrnw'
 
 mail = Mail(app)
 s = URLSafeTimedSerializer(app.secret_key)
